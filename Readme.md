@@ -210,6 +210,9 @@ export default connectDB
 ```
 <b>In above code we create an function and export it, but two thing we done
  - I store database connection in a variable `connectionInstance` and this variable return object and this object many things are available. But my wish is is on which host my database connected, because most of pro developer in development and in production use different database so, they use it .
+ If you want to be console `connectionInstance` then you got long object 
+ 
+![alt text](<Screenshot (257.png>)
 </b>
 
 `src/index.js`
@@ -218,8 +221,38 @@ import connectDB from "./db/index.js";
 
 connectDB()
 ```
-* <mark>Now If i Run This Project Then it Will Give Error . Because in `db/index.js` enviroment variable not be accessable, the reason is we not import our `dotenv`</mark>
+* Now If i Run This Project Then it Will Give Error . Because in `src/db/index.js` enviroment variable not be accessable, the reason is we are not import our `dotenv` .
+  
+  so import dotenv 
+```javaScript
+require('dotenv').config()
+```
+this is perfectly work but this make our code Idle , so we try i it import using import keyword. 
 
+```javaScript
+import dotenv from "dotenv"
+
+dotenv.config()
+```
+
+But notice thing is nowhere in docs. use this module import with `import dotenv from "dotenv"` . But we use this as a experimental feature , in package.json we add something .
+
+`package.json`
+```json
+"dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
+```
+
+we only import this module in main entry file `index.js`
+
+```javaScript
+import connectDB from "./db/index.js";
+import dotenv from "dotenv"
+require('dotenv').config({
+  path: './env'
+})
+
+connectDB()
+```
 
 
 
