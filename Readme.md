@@ -127,8 +127,8 @@ Generally this file used purpose is, in which file or folder we not want to appl
 
 In database connection we need some thing URI String so we put this in .env
 
-- we remove <mark>&nbsp;/&nbsp;</mark> ,last from my mongodb connection String 
-- we need a name of my database so we set database name in <mark>Constant.js</mark> and export database name variable. if you want then you put database namme in .env , no any issue becuse this is not any sensitive data .
+- we remove last<mark>&nbsp;/&nbsp;</mark> ,from my mongodb connection String .
+- we need a name of my database so we set database name in <mark>Constant.js</mark> and export database name variable. if you want then you put database name in .env , no any issue becuse this is not any sensitive data .
   
 ## Two major approach of DataBase connection
 - Put all db code in index.js (entry point), which is direct execute
@@ -136,19 +136,62 @@ In database connection we need some thing URI String so we put this in .env
 
 second approach is good because of this our code neat and clean
 
-## 1st Method to connect with database
+## 1st approach to connect with database
 
-IN DATABASE , KEEP ONE THING IN MIND
+<mark>IN DATABASE CONNECTION, KEEP ONE THING IN MIND
+</mark>
 
-- when you try communicate with database then you faced problem , so always used try and catch or promises
+- <mark>when you try communicate with database then you faced problem , so always used try and catch or promises
+- </mark>
  
-* Database is always in another continent, so it take time so use async await
+* <mark>Database is always in another continent, so it take time so use async await
+</mark>
 
 ### Install dotenv and mongoose package
 
 ```
 npm i dotenv mongoose
 ```
+### index.js root file
+
+```javascript
+import mongoose from "mongoose";
+import { DB_NAME } from "./constant";
+import express from "express"
+
+const app = express()
+
+; (async () => {
+    try {
+       await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`)
+       app.on("error", (error)=>{
+        console.log("ERR", error);
+        throw error
+       })
+
+       app.listen(process.env.PORT, (err)=>{
+        console.log(`App is listening on port ${process.env.PORT}`)
+       })
+    } catch(error){
+        console.log("ERROR", error)
+    }
+})()
+```
+* <b>Note</b>: Basically import mongoose and DB_NAME, 
+* After that we create an iife function `;()()` (Immediately Invoked Function Expression) . Generally all pro coder use `;` use just before the iife function , to abstain global variable and function which has not end statement with semicolon.
+`The use of iife for use for immediately invoked , as well as abstain from global pollution. we use iife .`
+
+- we use connect method to connect database in `try` and `catch`
+   
+*  we write `app.on` which basically use for if after connection error in express then it show error
+*  we execute iife function with `()`
+  
+
+## 2nd approach to connect with database(professional way)
+
+<mark>This is major approach for connect to database as a professional developer</mark>
+
+
 
 
 
