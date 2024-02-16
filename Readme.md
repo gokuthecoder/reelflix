@@ -1,14 +1,3 @@
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap')
-</style>
-<style>
-    h1 {
-  font-family: "Caveat", cursive;
-  font-optical-sizing: auto;
-    }
-</style>
-
-
 # GOKUTHECODER PRODUCTION BUILD BACKEND
 
 This video series on backend with javascript
