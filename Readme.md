@@ -122,3 +122,33 @@ you can ignore this if you want .
 ## use of .prettierignore
 
 Generally this file used purpose is, in which file or folder we not want to apply Prettier feature
+
+## Connect DataBase
+
+In database connection we need some thing URI String so we put this in .env
+
+- we remove <mark>&nbsp;/&nbsp;</mark> ,last from my mongodb connection String 
+- we need a name of my database so we set database name in <mark>Constant.js</mark> and export database name variable. if you want then you put database namme in .env , no any issue becuse this is not any sensitive data .
+  
+## Two major approach of DataBase connection
+- Put all db code in index.js (entry point), which is direct execute
+- create a db directory inside this write fucntion and import it in index.js and execute . 
+
+second approach is good because of this our code neat and clean
+
+## 1st Method to connect with database
+
+IN DATABASE , KEEP ONE THING IN MIND
+
+- when you try communicate with database then you faced problem , so always used try and catch or promises
+ 
+* Database is always in another continent, so it take time so use async await
+
+### Install dotenv and mongoose package
+
+```
+npm i dotenv mongoose
+```
+
+
+
