@@ -254,7 +254,44 @@ require('dotenv').config({
 connectDB()
 ```
 
+## app.js
+In `src/app.js` we work on express 
+```javaScript
+import express from "express"
+const app = express()
 
+export { app } // export default app
+```
 
+Import in entry file
+`src/index.js`
+```javaScript
+import connectDB from "./db/index.js";
+import dotenv from "dotenv"
+import {app} from "./app.js"
 
+dotenv.config({
+    path:'./env'
+})
 
+connectDB()
+.then(()=>{
+    app.listen(process.env.PORT || 8000 , ()=>{
+        console.log(` Server is running at port : ${process.env.PORT}`);
+    })
+
+    app.on("error",(error)=>{
+      console.log("ERROR", error);
+      throw error
+    })
+})
+.catch((err)=>{
+    console.log('MONGO db connection failed !!!', err);
+})
+
+```
+in connectDB we use async and await which is return promises so we use `then` & `catch` , and in `then` we listen our app .
+
+---
+
+# CLASSES FOR CUSTOM ERROR AND CUSTOM API RESPONSES 
