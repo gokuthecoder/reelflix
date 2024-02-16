@@ -120,4 +120,5 @@ you can ignore this if you want .
 ```
 
 ## use of .prettierignore
-    Generally this file used purpose is, in which file or folder we not want to apply Prettier feature
+
+Generally this file used purpose is, in which file or folder we not want to apply Prettier feature
