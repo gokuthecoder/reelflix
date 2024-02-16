@@ -191,6 +191,36 @@ const app = express()
 
 <mark>This is major approach for connect to database as a professional developer</mark>
 
+`src/db/index.js`
+```javaScript
+import mongoose from "mongoose";
+import { DB_NAME } from "../constant.js"
+
+const connectDB = async () => {
+    try {
+        const connectionInstance = await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`)
+        console.log(`\n MongoDB connected !!DB HOST: ${connectionInstance.connection.host}`);
+    } catch (error) {
+        console.log("MONGODB connection error", error)
+        process.exit(1)
+    }
+}
+
+export default connectDB
+```
+<b>In above code we create an function and export it, but two thing we done
+ - I store database connection in a variable `connectionInstance` and this variable return object and this object many things are available. But my wish is is on which host my database connected, because most of pro developer in development and in production use different database so, they use it .
+</b>
+
+`src/index.js`
+```javaScript
+import connectDB from "./db/index.js";
+
+connectDB()
+```
+* <mark>Now If i Run This Project Then it Will Give Error . Because in `db/index.js` enviroment variable not be accessable, the reason is we not import our `dotenv`</mark>
+
+
 
 
 

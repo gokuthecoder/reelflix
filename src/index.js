@@ -1,9 +1,6 @@
-import mongoose, { mongo } from "mongoose";
-import { DB_NAME } from "./constant";
-import express from "express"
-import db from './db/index.js'
+import connectDB from "./db/index.js";
 
-const app = express()
+connectDB()
 
 /* ; (async () => {
     try {
