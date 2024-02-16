@@ -4,7 +4,7 @@ This video series on backend with javascript
 
 -[Model link](google.com)
 
-## Temp
+## temp directory
 
 usuallay this folder use to temproraly upload file then upload this file to 3rd party like aws , cloudnary
 
@@ -63,3 +63,61 @@ Go to in scripts and add
 "dev":"nodemon src/index.js"
 ```
 
+## create controllers, db,middlewares, models, routes and utils directory
+
+![alt text](image.png)
+
+- controllers : here we write our major functionality
+  
+- db : database connection logic
+  
+- middleware : we add an middleware just befrore fullfield request api
+  
+- models 
+  
+- routes : here we define our API routes
+
+- utils : a "utility" directory typically contains utility functions or modules that are used across different parts of the application. These utility functions are often small, reusable pieces of code that perform common tasks or provide helper functionalities.
+  
+  e.g when user upload profile , user upload video on youtube , in this synario these two thing is same which is upload.
+
+## Prettier
+
+![alt text](prettier.png)
+
+This is dependency is used for generally in development so we use as dev dependency:
+
+```
+npm install -D prettier
+```
+
+- Consistency in Code Style
+  -  Prettier enforces a consistent code style across your codebase, which can improve readability and maintainability. By using npm to manage Prettier, you ensure that all developers working on the project use the same code formatting rules.
+
+- Ease of Collaboration: 
+  - When multiple developers work on a project, having a consistent code style is crucial for collaboration. By using Prettier via npm, everyone working on the project can easily format their code to match the project's style guidelines.
+
+you can ignore this if you want .
+
+ ## uses
+
+ - first create a file in root directory name is  <mark><b>.prettierc</mark> & <mark>.prettierignore</mark></b>
+
+## .prettierc
+
+```javaScript
+{
+"singleQuote":false, //everywhere use only doubleQuote, no singleQuote
+
+"bracketSpacing": true, // after bracket space allowed or not, i choose yes
+
+"tabwidth": 2,// i choose 2 tab for me this whole project
+
+"trailingComma":"es5", //Print trailing commas wherever possible in multi-line comma-separated syntactic structures. (A single-line array, for example, never gets trailing commas.)
+
+"semi":true, // we need semicolon
+}
+```
+
+## use of .prettierignore
+    Generally this file used purpose is, in which file or folder we not want to apply Prettier feature
