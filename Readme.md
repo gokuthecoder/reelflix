@@ -10,7 +10,7 @@ usuallay this folder use to temproraly upload file then upload this file to 3rd 
 
 ## .gitkeep
 
-git not store empty folder so we keep here a .gitkeep file
+git not store empty folder so we keep here generalluy .gitkeep file keep on that folder which have no any file inside
 
 ## gitignore
 
