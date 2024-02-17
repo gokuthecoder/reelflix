@@ -401,8 +401,62 @@ in connectDB we use async and await which is return promises so we use `then` & 
   instead of `try` `catch` we use `promises`.
 
   ```javaScript
-  const asyncHandleer
+  const asyncHandler = (requestHandler) => {
+    (req, res, next) => {
+        Promise.resolve(requestHandler)
+            .catch((err) => next(err))
+    }
+  }
   ```
+  One thing which is we need to make an Standarised format , error always come in this fix format
+
+  `src/utils/ApiError.js`
+
+  ```javaScript
+  class ApiError extends Error {
+    constructor(
+        statusCode,
+        message = "Something went wrong",
+        error = [],
+        stack = ""
+    ) {
+        super(message)
+        this.statusCode = statusCode
+        this.data = null
+        this.message = message
+        this.success = false
+        this.errors = errors
+
+        if (stack) {
+            this.stack = stack
+        } else {
+            Error.captureStackTrace(this, this.constructor)
+        }
+    }
+  }
+  export { ApiError }
+  ```
+  🤔 You think okay we make custom ApiError then is it possible to make ApiResponce , so you need to know Error class defined in core node, Response not defined in node, this is defined in Express .
+
+  `src/utils/ApiResponse.js`
+  ```javaScript
+    class ApiResponse {
+    constructor(statusCode, data, message = "Success") {
+        this.statusCode = statusCode
+        this.data = data
+        this.message = message
+        this.success = statusCode < 400
+    }
+  }
+
+  export { ApiResponse }
+  ```
+  In Api Response Status Code defined , but you can overwrite this 
+  * Informational responses (100 199)
+  * Successful responses (200 – 299)
+  * Redirection messages (300 – 399)
+  * Client error responses (400 – 499)
+  * Server error responses (500 - 599)
 
 
 
