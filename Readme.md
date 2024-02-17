@@ -459,19 +459,242 @@ in connectDB we use async and await which is return promises so we use `then` & 
   * Server error responses (500 - 599)
 
 ## Create Model
+
   <mark><b>MONGODB save data in BSON, means save data in binary format while json save json text based format<b/></mark>
+
+![alt text](model.png)
 
   `user.model.js`
   ```javaScript
+    import  mongoose from "mongoose";
 
+  const userSchema = new mongoose.Schema(
+    {
+        username : {
+            type: String,
+            required: true,
+            uniq: true,
+            lowercase: true,
+            trim: true,
+            index: true //it is better option to enable searching option, with it work but it is optimized
+        },
+        email: {
+            type: String,
+            required: true,
+            uniq: true,
+            lowercase: true,
+            trim: true,
+        },
+        fulname: {
+            type: String,
+            required: true,
+            trim: true,
+            index: true
+        },
+        avatar: {
+            type: String, //cloudinary url
+            required: true,
+        },
+        coverImage : {
+            type: String, //cloudinary url
+        },
+        watcHistory : {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Video"
+        },
+        password : {
+            type: String,
+            required: [true, "password is required"]
+        },
+        refreshToken: {
+            type: String
+        }
+    }, {timestamps: true})
+
+    export const User = mongoose.model("User", userSchema)
   ```
   
    `video.model.js`
   ```javaScript
-  
+  import mongoose from "mongoose";
+
+  const videoSchema = new mongoose.Schema(
+    {
+        videoFile: {
+            type: String, // cloudinary url
+            required: true
+        },
+        thumbnail  : {
+            type: String,
+            required: true
+        },
+        title: {
+            type: String,
+            required: true
+        },
+        duration: {
+            type: Number,
+            required: true
+        },
+        views: {
+            type: Number,
+            default: true
+        },
+        isPublished: {
+            type: Boolean,
+            default: true
+        },
+        owner: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    }, { timestamps: true })
+
+    export const Video = mongoose.model("Video", videoSchema)
   ```
 
-![alt text](model.png)
+  ## intall mongoose-aggregate-paginate-v2 package
+
+  ```javascript
+  npm install mongoose-aggregate-paginate-v2
+  ```
+
+  Here are a few reasons why you might need this plugin:
+
+  * Simplified Pagination
+  * Efficiency
+  * Consistency
+  * Ease of Use
+  
+  It is very simple to use,
+  * import it you model 
+  * `yourSchema.plugin()` it is basically mean i say to mongoose , hey mongoose i want to use an plugin .
+  ```javaScript
+  import mongoose from "mongoose";
+  import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
+
+  const videoSchema = new mongoose.Schema(
+    {
+        videoFile: {
+            type: String, // cloudinary url
+            required: true
+        },
+        thumbnail  : {
+            type: String,
+            required: true
+        },
+        title: {
+            type: String,
+            required: true
+        },
+        duration: {
+            type: Number,
+            required: true
+        },
+        views: {
+            type: Number,
+            default: true
+        },
+        isPublished: {
+            type: Boolean,
+            default: true
+        },
+        owner: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    }, { timestamps: true })
+
+    videoSchema.plugin(mongooseAggregatePaginate)
+
+    export const Video = mongoose.model("Video", videoSchema)
+   ```
+
+## Now install bcrypt and jsonwebtoken
+
+```javaScript
+npm i bcrypt jsonwebtoken
+```
+
+Bcrypt is use for hashing password and json-web-token is used for generate token
+
+we directly not hash password using bcrypt so we need help of mongoose `pre` hook. we can execute this hook just before save data in database . so just encrypt password using this hook .
+
+```javaScript
+userSchema.pre("save", async function (next) {     
+    this.password = bcrypt.hash(this.password, 10)
+    next()
+ })
+```
+
+okay the issue in this code when user update something then always password change, so we add a logic whenever password not changes then not change password.
+
+```javaScript
+userSchema.pre("save", async function (next) { 
+    if(!this.isModified("password")) return next()
+    
+    this.password = bcrypt.hash(this.password, 10)
+    next()
+ })
+```
+
+we make own methods with mongoose 
+
+```javaScript
+//Password check
+ userSchema.methods.ispasswordCorrect = async function
+ (password){
+    return await bcrypt.compare(password, this.password)
+ }
+```
+<mark>JWT is a beerer token, it is like a like which has this token , if any send this token then they got data</mark>
+
+```c
+PORT=8000
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.tdr3cvt.mongodb.net
+CORS_ORIGIN=*
+ACCESS_TOKEN_SECRET=YOUR_REFRESH_TOKEN_EXPIRY
+ACCESS_TOKEN_EXPIRY=1d
+REFRESH_TOKEN_SECRET=YOUR_REFRESH_TOKEN_SECRET
+REFRESH_TOKEN_EXPIRY=10d
+```
+But here is noticable thing is we store only `REFRESH_TOKEN_SECRET (refreshToken)`) in database but `ACCESS_TOKEN_SECRET` not store in database. Because we use `session` and `cookies` .
+
+so we make own method to generate `accessToken`
+
+```javaScript
+userSchema.methods.generateAccessToken = function () {
+    return jwt.sign(
+        {
+            _id: this._id,
+            email: this.email,
+            username: this.username,
+            fullName: this.fullName
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+        }
+    )
+}
+
+userSchema.methods.generateRefreshToken = function () {
+    return jwt.sign(
+        {
+            _id: this._id
+        },
+        process.env.REFRESH_TOKEN_SECRET,
+        {
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY
+        }
+    )
+}
+```
+
+we discuss aboth this refresh token and access token , simply remember this thing we not pass many information in `generateRefreshToken`
+
+
+
 
 
 
