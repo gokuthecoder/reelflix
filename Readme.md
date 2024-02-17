@@ -458,6 +458,21 @@ in connectDB we use async and await which is return promises so we use `then` & 
   * Client error responses (400 – 499)
   * Server error responses (500 - 599)
 
+## Create Model
+  <mark><b>MONGODB save data in BSON, means save data in binary format while json save json text based format<b/></mark>
+
+  `user.model.js`
+  ```javaScript
+
+  ```
+  
+   `video.model.js`
+  ```javaScript
+  
+  ```
+
+![alt text](model.png)
+
 
 
 
