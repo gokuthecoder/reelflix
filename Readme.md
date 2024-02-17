@@ -295,3 +295,119 @@ in connectDB we use async and await which is return promises so we use `then` & 
 ---
 
 # CLASSES FOR CUSTOM ERROR AND CUSTOM API RESPONSES 
+- We are most of cases see express, how to get response from api and request to api .
+- In request we learn req.body req.params , req.cookies.
+- We also use middleware .
+  
+  ## Now it is time to insatll some package and discussion about that
+  ```javaScript
+  npm i cookie-parser
+  npm i cors
+  ```
+  
+  cors package allow us to setting cross origin resources.
+
+  Most of time when you need to use middlware and setting some configuration then you need `use()`
+
+  After install those package , i need to configure origin with `cors`.
+
+  IN `app.js` we, import both package . If you remember we need to configure our origin and i use the as a middleware.
+
+  ```javaScript
+  app.use(cors())
+  ``` 
+  Generally all dev are configure origin write this type of code . But if you want some setting then you go through Express Docs then you one more thing . 
+  - [Configuring CORS](https://www.npmjs.com/package/cors#configuring-cors)
+  `app.js`
+  ```javaScript
+  app.use(cors({
+      origin: 'https://whitelist.com' || process.env.CORS_ORIGIN,
+      optionsSuccessStatus: 200,
+      credentials:: true
+  }))
+  ```
+  `.env`
+  ```javaScript
+  PORT=8000
+  MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.tdr3cvt.mongodb.net
+  CORS_ORIGIN=*
+  ```
+  In this backend , many 'data' in comeform of json ,come from url , from database and some data from Form so we do not allow to come in server unlimited data, this will crash our server .
+  So we apply an middleware -
+
+  previous version of express , express do not allow JSON data, so we need to use body-parser package, but now express allow us to JSON data.
+
+  ```javaScript
+  app.use(express.json({ limit: "16kb" }))
+  ```
+
+  Sometimes data come from URL , so we need configuration that URL, because in url % and many other sign available, which have own meaning so , i say to  express  understand URL
+  `https://www.google.com/search?q=express+js&rlz=1C1ONGR_enIN1062IN1062&oq=express+js&gs_lcrp=EgZjaHJvbWUyDwgAEEUYORiDARixAxiABDINCAEQABiDARixAxiABDINCAIQABiDARixAxiABDINCAMQABiDARixAxiABDIGCAQQBRhAMgYIBRBFGDwyBggGEEUYPDIGCAcQRRg90gEIMjU3MmowajeoAgCwAgA&sourceid=chrome&ie=UTF-8`
+
+    ```javaScript
+    app.use(express.urlencoded({ extended: true, limit: '16kb' }))
+    ```
+    if i want to add limit in URL, if i want data come from URL in specific size so we can apply limit .
+
+    now we add one more configuration of express which is `static` , sometime we want to store file , pdf and image , so we want  to store in `public` directory.
+
+    ```javaScript
+    app.use(express.static('public'))
+    ```
+
+    ### why we install cookies-parser, how to use it
+    `cookies-parser` working is from our server we access user browser cookies and set cookies user browser. Basically i will perform basic CRUD operation. Because some process to keep secure cookies in user browser which is only server can read and remove that . All production grade app use this .
+
+    ```javaScript
+    app.use(cookiesParser())
+    ```
+    Sometime we need own middleware, let an example of instagram, user request on `/instagram` then user got response, but before response i want to add a checker(middleware) , is this user whose request on `/instagram`is an admin of instagram , becuase access to this request user must be an admin, and login in instagram .
+    if user fullfill this then give response this user .
+
+    generally if go in express docs then you got in api method `(req,res)`, but actullay in api method we can pass 4 thing including  this `(err, req, res, next)`, 
+    - err means error
+    - req means request
+    - res means response
+    - next means middleware
+      - we already discuss about middleware , check request just before response
+
+    ![alt text](middleware.png)
+
+  ### Discussion About DB
+  Because of we many time , communicate with Database. So we always need to write Database connection Code.
+
+  So, we make a utility file and make a wrapper generalised function, which function work is heyy! pass function in my method, i execute that and give you back . And this function we use `async` `await` and `try` `catch`
+
+  `src/utils/asyncHandler.js`
+
+  `short code`
+  ```javaScript
+    const asyncHandler = (fn) => () => {} // this is actually a Higher Order Function , because id an function take one or more function as a parameter or return a function as its result .
+  ```
+  `long code`
+  ```javaScript
+  const asyncHandler = (fn) => async (req, res, next) => {
+    try {
+        await fn(req, res, next)
+    } catch (error) {
+        res.status(err.code || 500).json({
+            success: false,
+            message: err.message
+        })
+    }
+  } 
+  ```
+  instead of `fn` is a function name. But production grade code, you not decided to you write code only this method . So you need to know another method also , so we write code in another method, 
+  instead of `try` `catch` we use `promises`.
+
+  ```javaScript
+  const asyncHandleer
+  ```
+
+
+
+
+
+
+
+
