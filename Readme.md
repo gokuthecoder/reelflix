@@ -693,6 +693,133 @@ userSchema.methods.generateRefreshToken = function () {
 
 we discuss aboth this refresh token and access token , simply remember this thing we not pass many information in `generateRefreshToken`
 
+## File uploading
+on backend not store any docuemnt or media file, we upload all file on 3rd party website
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## HTTP CRASH COURSE
+Hyper Text Transfer Protocol
+
+*URL: Uniform Resource Locator
+* URI: Uniform Resource Identifier
+* URN: Uniform Resource Name
+  
+## what are HTTP headers
+   when  you send HTTP request then we need to send request with additional data(like when file created , what file name, when file created, when file updated), this information called HTTP header .
+
+   This HTTP headers is a metadata(data about data)
+
+`metadata` -> key-value sent along with request & response
+
+if you sent reuest from postman, browser and programmetically then all these http header sent different .
+
+headers also comes from response
+
+## what is functions of headers
+
+many function perform by headers, but some function are here like caching, authentication, manage state .
+
+
 
 
 
