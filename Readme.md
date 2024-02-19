@@ -819,6 +819,12 @@ headers also comes from response
 
 many function perform by headers, but some function are here like caching, authentication, manage state .
 
+# routes
+
+when you write `app.get` then you write her route and midlleware both, but when you write `routes` then you seprate `routes` so you need an middleware .
+
+ -[ABOUT EXPORT DEFAULT](https://youtu.be/HqcGLJSORaA?list=PLu71SKxNbfoBGh_8p_NS-ZAh6v7HhYqHW&t=1077)
+
 
 
 
