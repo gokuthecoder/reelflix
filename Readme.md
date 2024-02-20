@@ -1,5 +1,34 @@
 # GOKUTHECODER PRODUCTION BUILD BACKEND
 
+# DEPOLY
+
+# Process to depoly to Heroku
+`package.json`
+ * Application must Start `with npm start`
+ * Specify node version
+```javaScript
+  "engines": {  
+    "node": "20.x"
+  },
+```
+
+# Create a Procfile
+`Procfile`
+```
+web: npm start
+```
+# on heroku web dashboard must add your Enviroment variable, donot put hard core Value
+
+![alt text](image-1.png)
+
+# must add node build pack
+
+![alt text](image-2.png)
+
+<mark>
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</mark>
+
 This video series on backend with javascript
 
 -[Model link](https://www.google.com)
